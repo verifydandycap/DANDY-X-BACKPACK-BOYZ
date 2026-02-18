@@ -15,11 +15,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden; 
-            justify-content: flex-end;
+            overflow: hidden; /* Sin scroll */
+            justify-content: space-between;
         }
 
-        /* 1. IMAGEN DE FONDO (Con efecto oscurecido) */
+        /* Imagen de Fondo (fondo.png) */
         .background {
             position: fixed;
             top: 0;
@@ -29,49 +29,68 @@
             background: url('fondo.png') no-repeat center center;
             background-size: cover;
             z-index: 1;
-            filter: brightness(0.35); /* Aquí se controla qué tan oscuro se ve */
+            filter: brightness(0.4);
         }
 
-        /* 2. LOGO EN LA ESQUINA */
+        /* LOGO DANDY EN LA ESQUINA SUPERIOR DERECHA */
         .corner-logo {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             width: 60px;
             height: auto;
             z-index: 100;
             pointer-events: none;
         }
 
+        /* Contenedor de la gorra (gorra.jpeg) */
+        .hat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%); 
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hat-img {
+            width: 95%;
+            max-width: 450px;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+        }
+
         /* Panel inferior */
         .bottom-panel {
             position: relative;
             z-index: 10;
-            width: 85%;
-            max-width: 320px;
-            background: rgba(18, 18, 18, 0.75); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 340px;
+            background: rgba(30, 30, 30, 0.5); 
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px 20px;
+            padding: 15px 0;
             text-align: center;
-            border-radius: 25px;
-            margin-bottom: 60px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border-radius: 30px;
+            margin-bottom: 50px; 
         }
 
         .status-text {
             color: #ffffff;
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            opacity: 0.9;
         }
 
-        /* 3. SELLO CON BRILLO */
+        /* Logo con brillo (logoo.png) */
         .gold-seal {
-            width: 95px;
+            width: 85px;
             height: auto;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
             transform: scale(0);
             animation: growIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
                        glowEffect 3s infinite ease-in-out;
@@ -89,20 +108,20 @@
 
         .scan-count {
             color: #ffffff;
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 25px;
+            font-size: 15px;
+            margin-bottom: 15px;
         }
 
+        /* Botón estilo captura */
         .btn-about {
             display: inline-block;
             background-color: #000000;
             color: #ffffff;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            padding: 12px 35px;
-            border-radius: 12px;
+            padding: 10px 30px;
+            border-radius: 10px;
             border: 1px solid #333;
         }
     </style>
@@ -110,29 +129,33 @@
 <body>
     <div class="background"></div>
     
-    <img src="dandy.png" alt="Logo" class="corner-logo">
+    <img src="dandy.png" alt="Dandy Logo" class="corner-logo">
+
+    <div style="flex-grow: 1;"></div>
+
+    <div class="hat-container">
+        <img src="gorra.jpeg" alt="Hat" class="hat-img">
+    </div>
 
     <div class="bottom-panel">
         <div class="status-text">Authentic Dandy Product</div>
-        
-        <img src="logoo.png" alt="Sello" class="gold-seal">
-        
+        <img src="logoo.png" alt="Gold Seal" class="gold-seal">
         <div class="scan-count">Scan Count: <span id="counter">1</span></div>
         <a href="#" class="btn-about">About Dandy Hats</a>
     </div>
 
     <script>
-        (function() {
-            const STORAGE_KEY = 'dandy_scans_v5';
-            let count = localStorage.getItem(STORAGE_KEY);
+        function updateCounter() {
+            let count = localStorage.getItem('dandy_scans');
             if (count === null) {
                 count = 1;
             } else {
                 count = parseInt(count) + 1;
             }
-            localStorage.setItem(STORAGE_KEY, count);
+            localStorage.setItem('dandy_scans', count);
             document.getElementById('counter').innerText = count;
-        })();
+        }
+        window.onload = updateCounter;
     </script>
 </body>
 </html>
